@@ -3,30 +3,26 @@
   https://adventofcode.com/2024/day/1
 */
 const { calculate } = require("./calc")
+const fs = require('fs');
 const { performance } = require('perf_hooks');
 
-const numberOfListItems = 500000
+const l = []
+const r = []
 
-const list = (length, min, max) => {
-    return Array.from({ length }, () => 
-        Math.floor(Math.random() * (max - min + 1)) + min
-      );
-}
+const data = fs.readFileSync('input.txt', 'utf8');
+    
+const lines = data.split('\n');
 
-const shuffle = (arr) => {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+lines.forEach(line => {
+    const [num1, num2] = line.split(/\s+/);
+    if (num1 && num2) {
+    l.push(Number(num1));
+    r.push(Number(num2));
     }
-    return arr;
-}
-
-//generate two random unordered lists
-const l = shuffle(list(numberOfListItems, 1, 99))
-const r = shuffle(list(numberOfListItems, 1, 99))
+});
 
 const start = performance.now();
 const result = calculate(l, r);
 const end = performance.now();
     
-console.log(`result:`, d, `time: ${end - start} ms`);
+console.log(`result:`, result, `time: ${end - start} ms`);

@@ -21,7 +21,7 @@ function radixSort(arr) {
             const digit = getDigit(arr[i], k);
             buckets[digit].push(arr[i]);
         }
-        
+
         arr = [].concat(...buckets);
     }
 

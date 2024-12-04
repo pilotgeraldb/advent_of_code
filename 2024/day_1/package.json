@@ -4,6 +4,7 @@
   "description": "historian_hysteria (https://adventofcode.com/2024/day/1)",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "npx jest"
   },
   "author": "Gerald Burkholder",
