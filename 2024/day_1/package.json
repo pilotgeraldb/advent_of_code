@@ -1,0 +1,11 @@
+{
+  "name": "aoc_day_1",
+  "version": "1.0.0",
+  "description": "historian_hysteria (https://adventofcode.com/2024/day/1)",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "author": "Gerald Burkholder",
+  "license": "ISC"
+}
