@@ -1,0 +1,12 @@
+{
+  "name": "aoc_day_2",
+  "version": "1.0.0",
+  "description": "Red-Nosed Reports (https://adventofcode.com/2024/day/2)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "npx jest"
+  },
+  "author": "Gerald Burkholder",
+  "license": "ISC"
+}
