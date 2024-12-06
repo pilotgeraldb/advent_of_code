@@ -5,19 +5,19 @@
 
 const fs = require('fs');
 const { performance } = require('perf_hooks');
-const { checkSortOrder, checkAdjacentDistances } = require('./safe')
+const { checkSafe } = require('./safe')
 
 const data = fs.readFileSync('input.txt', 'utf8');
 
-const lines = data.split('\n');
+const lines = data.split('\r\n');
+
+console.log(`proccessing ${lines.length} line(s)...`)
 
 const start = performance.now();
 let safe = 0
 lines.forEach(line => {
-    // do something
-    arr = []
-
-    if(checkAdjacentDistances(arr) && checkSortOrder(arr))
+    let arr = line.split(" ");
+    if(checkSafe(arr))
       safe++
 });
 const end = performance.now();
