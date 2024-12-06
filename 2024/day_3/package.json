@@ -1,0 +1,12 @@
+{
+  "name": "aoc_day_3",
+  "version": "1.0.0",
+  "description": "Mull It Over (https://adventofcode.com/2024/day/3)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "npx jest"
+  },
+  "author": "Gerald Burkholder",
+  "license": "ISC"
+}
