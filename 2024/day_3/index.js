@@ -5,13 +5,14 @@
 
 const fs = require('fs');
 const { performance } = require('perf_hooks');
+const { parse } = require('./parse')
 
 const data = fs.readFileSync('input.txt', 'utf8');
 
 const start = performance.now();
 
-// write solution code here
+let result = parse(data)
 
 const end = performance.now();
 
-console.log(`result:`, 0, `time: ${end - start} ms`)
+console.log(`result:`, result, `time: ${end - start} ms`)
