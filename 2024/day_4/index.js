@@ -5,12 +5,13 @@
 
 const fs = require('fs');
 const { performance } = require('perf_hooks');
+const { search } = require('./search')
 
 const data = fs.readFileSync('input.txt', 'utf8');
 
 const start = performance.now();
 
-/* write solution code here */
+var result = search(data)
 
 const end = performance.now();
 
