@@ -1,0 +1,11 @@
+{
+  "name": "aoc_day_4",
+  "version": "1.0.0",
+  "description": "Ceres Search (https://adventofcode.com/2024/day/4)",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "author": "Gerald Burkholder",
+  "license": "ISC"
+}
