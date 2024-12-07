@@ -90,7 +90,6 @@ const search = (str, xSize, ySize, eolStrLen) => {
         return charInfo
       }
     } else {
-      //throw new Error(`index out of range ${idx} | dir:${dir} pos:${pos} next:${nextWordIdx}`)
       return charInfo
     }
   }
