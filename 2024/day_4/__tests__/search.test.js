@@ -1,17 +1,25 @@
 const { search } = require('../search')
 
-// test.each([
-//   [`....XXMAS.\r\n.SAMXMS...\r\n...S..A...\r\n..A.A.MS.X\r\nXMASAMX.MM\r\nX.....XA.A\r\nS.S.S.S.SS\r\n.A.A.A.A.A\r\n..M.M.M.MM\r\n.X.X.XMASX`, 18],
-// ])('parse', (str, expected) => {
-//   result = search(str, 10, 10)
-//   expect(result).toBe(expected)
-// });
+test.each([
+  [`....XXMAS.\r\n.SAMXMS...\r\n...S..A...\r\n..A.A.MS.X\r\nXMASAMX.MM\r\nX.....XA.A\r\nS.S.S.S.SS\r\n.A.A.A.A.A\r\n..M.M.M.MM\r\n.X.X.XMASX`, 18],
+])('parse', (str, expected) => {
+  result = search(str, 10, 10)
+  expect(result).toBe(expected)
+});
 
-//OVERLAPPY LAP
+//horizontal overlap
 test.each([
   [`XMASAMX`, 2],
 ])('parse', (str, expected) => {
   result = search(str, 7, 1)
+  expect(result).toBe(expected)
+});
+
+//vertical overlap
+test.each([
+  [`...X\r\n...M\r\n...A\r\n...S\r\n...A\r\n...M\r\n...X`, 2],
+])('parse', (str, expected) => {
+  result = search(str, 4, 7)
   expect(result).toBe(expected)
 });
 

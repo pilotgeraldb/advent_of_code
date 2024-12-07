@@ -9,16 +9,20 @@ const DIR = {
   NW: 315,
 }
 
-const search = (str, xSize, ySize) => {
+const search = (str, xSize, ySize, eolStrLen) => {
   let total = 0
   let found = {}
+
+  if(!eolStrLen){
+    eolStrLen = 2
+  }
 
   // nextWordIdx is the zero-based index of the next char in XMAS;
   // where X = 0, M = 1, A = 2, S = 3
   const getChar = (dir, pos, nextWordIdx) => {
     //add 2 for the newline at the end of a row
-    let rowOffset = ((xSize + 2) * nextWordIdx)
-    let rowIdx = pos % xSize
+    let rowOffset = ((xSize + eolStrLen) * nextWordIdx)
+    let rowIdx = pos % (xSize + eolStrLen)
     let rowNum = (pos <= xSize) ? 0 : Math.ceil(xSize / pos)
     let idx = -1;
     let charInfo = {
@@ -105,7 +109,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found XMAS at ${pos}:${u.idx}`)
       }
     }
     if (buf == "SAMX"){
@@ -113,7 +116,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found SAMX at ${pos}:${u.idx}`)
       }
     }
     //S
@@ -127,7 +129,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found XMAS at ${pos}:${u.idx}`)
       }
     }
     if (buf == "SAMX"){
@@ -135,7 +136,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found SAMX at ${pos}:${u.idx}`)
       }
     }
     //SW
@@ -149,7 +149,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found XMAS at ${pos}:${u.idx}`)
       }
     }
     if (buf == "SAMX"){
@@ -157,7 +156,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found SAMX at ${pos}:${u.idx}`)
       }
     }
     //W
@@ -171,7 +169,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found XMAS at ${pos}:${u.idx}`)
       }
     }
     if (buf == "SAMX"){
@@ -179,7 +176,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found SAMX at ${pos}:${u.idx}`)
       }
     }
     //NW
@@ -193,7 +189,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found XMAS at ${pos}:${u.idx}`)
       }
     }
     if (buf == "SAMX"){
@@ -201,7 +196,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found SAMX at ${pos}:${u.idx}`)
       }
     }
     //N
@@ -215,7 +209,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found XMAS at ${pos}:${u.idx}`)
       }
     }
     if (buf == "SAMX"){
@@ -223,7 +216,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found SAMX at ${pos}:${u.idx}`)
       }
     }
     //NE
@@ -237,7 +229,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found XMAS at ${pos}:${u.idx}`)
       }
     }
     if (buf == "SAMX"){
@@ -245,7 +236,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found SAMX at ${pos}:${u.idx}`)
       }
     }
     //E
@@ -259,7 +249,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found XMAS at ${pos}:${u.idx}`)
       }
     }
     if (buf == "SAMX"){
@@ -267,7 +256,6 @@ const search = (str, xSize, ySize) => {
         found[`${pos}:${u.idx}`] = true
         found[`${u.idx}:${pos}`] = true
         t++
-        console.log(`found SAMX at ${pos}:${u.idx}`)
       }
     }
 
@@ -276,6 +264,7 @@ const search = (str, xSize, ySize) => {
 
   for(let x = 0; x < str.length; x++){
       let c = str[x]
+
       if (c === 'X')
       {
         total = total + check(x)
