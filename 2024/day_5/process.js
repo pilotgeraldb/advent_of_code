@@ -1,12 +1,4 @@
-const isLetter = (char) => {
-    const code = char.charCodeAt(0);
-    return (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
-};
-
-const isDigit = (char) => {
-    const code = char.charCodeAt(0);
-    return code >= 48 && code <= 57;
-};
+const { isDigit } = require('../../shared/numbers')
 
 const process = (str) => {
     let buf = ""
@@ -14,6 +6,8 @@ const process = (str) => {
     let isData = false
     const rules = {}
     let lRule = -1
+
+    let numbers = [];
 
     const reset = () => {
         buf = ""
@@ -52,10 +46,21 @@ const process = (str) => {
         } else if (isData){
             if(isDigit(c)) {
                 buf += c;
-                console.log(buf)
                 continue;
             } else if (c === ','){
-
+                numbers.push(Number(buf))
+                buf = ""
+                continue;
+            }
+            else if (c === '\r' || c === '\n'){
+                //determine validation
+                for (let i = 0; i < numbers.length; i++){
+                    let n1 = numbers[i]
+                    let n2 = numbers[i+1]
+                    let rule = rules[n1]
+                    
+                }
+                continue;
             }
         }
         buf += c;
