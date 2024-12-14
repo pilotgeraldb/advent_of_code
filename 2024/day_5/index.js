@@ -7,7 +7,7 @@ const fs = require('fs');
 const { performance } = require('perf_hooks');
 const { process } = require('./process');
 
-const data = fs.readFileSync('test.txt', 'utf8');
+const data = fs.readFileSync('input.txt', 'utf8');
 
 const start = performance.now();
 
