@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"jest.disabledWorkspaceFolders": [
+			"day_1",
+			"day_2",
+			"day_5",
+			"day_4",
+			"day_3"
+		],
+		"testing.openTesting": "neverOpen",
+		"jest.outputConfig": {
+			"revealOn": "run",
+			"revealWithFocus": "none",
+			"clearOnRun": "none"
+		}
+	}
+}

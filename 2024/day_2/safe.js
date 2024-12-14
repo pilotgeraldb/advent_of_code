@@ -1,12 +1,4 @@
-
-const distance = (a, b) => {
-  a = Number(a)
-  b = Number(b)
-  if (a >= b)
-      return a - b
-  else
-      return b - a
-}
+const { distance } = require('../shared/numbers')
 
 // determines if the levels are either all increasing or all decreasing.
 const checkSafe = (arr) => {
