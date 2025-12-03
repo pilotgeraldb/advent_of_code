@@ -10,6 +10,14 @@
       "program": "${workspaceFolder}/2025/day_1",
     },
     {
+      "name": "2025 Day 2",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "cwd": "${workspaceFolder}/2025/day_2",
+      "program": "${workspaceFolder}/2025/day_2",
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
