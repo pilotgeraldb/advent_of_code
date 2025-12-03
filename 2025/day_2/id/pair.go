@@ -6,18 +6,19 @@ import (
 )
 
 type Pair struct {
-	First   int64
-	Last    int64
-	invalid []int64
+	First      int64
+	Last       int64
+	invalidSum int64
 }
 
-func (id *Pair) Validate() {
+func (id *Pair) Validate() int64 {
 	r := id.rangeInts()
 	for _, n := range r {
 		if !validInt64(n) {
-			id.invalid = append(id.invalid, n)
+			id.invalidSum += n
 		}
 	}
+	return id.invalidSum
 }
 
 func (id Pair) rangeInts() []int64 {
@@ -34,25 +35,17 @@ func (id Pair) rangeInts() []int64 {
 	return res
 }
 
-func (id Pair) SumInvalid() int64 {
-	r := int64(0)
-	for _, n := range id.invalid {
-		r += n
-	}
-	return r
-}
-
 func NewIdPair() Pair {
 	return Pair{
-		First:   0,
-		Last:    0,
-		invalid: []int64{},
+		First:      0,
+		Last:       0,
+		invalidSum: 0,
 	}
 }
 
 func validInt64(n int64) bool {
 	s := strconv.FormatInt(n, 10)
-	return valid(s, 2, true) //part 2: at-least 2 repeats
+	return valid(s, 2, false) //part 2: at-least 2 repeats
 }
 
 func valid(s string, minRepeats int, atLeast bool) bool {

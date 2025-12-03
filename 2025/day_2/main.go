@@ -10,7 +10,7 @@ import (
 
 func main() {
 	s := state.State{}
-	shared.StreamProcess("input.txt", func(r rune) {
+	shared.StreamProcess("test.txt", func(r rune) {
 		if s.CurrentPair == nil {
 			s.CurrentPair = new(id.Pair)
 		}
@@ -22,8 +22,7 @@ func main() {
 				s.Pairs = append(s.Pairs, *s.CurrentPair)
 				s.Reset()
 			}
-			s.Validate()
-			s.Result = s.Sum()
+			s.Result = s.Validate()
 		case '-':
 			s.CurrentPair.First, _ = strconv.ParseInt(string(s.Value), 10, 64)
 			s.Value = []rune{}

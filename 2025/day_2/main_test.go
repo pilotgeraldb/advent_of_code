@@ -13,8 +13,7 @@ func TestIdPairValidate(t *testing.T) {
 		Last:  22,
 	}
 
-	p.Validate()
-	r := p.SumInvalid()
+	r := p.Validate()
 
 	assert.Equal(t, int64(33), r, "should be equal")
 }

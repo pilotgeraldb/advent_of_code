@@ -34,17 +34,10 @@ func (s State) GetValue() int64 {
 	return v
 }
 
-func (s *State) Validate() {
-	for i := range s.Pairs {
-		s.Pairs[i].Validate()
-	}
-}
-
-func (s *State) Sum() int64 {
+func (s *State) Validate() int64 {
 	r := int64(0)
-	for _, pair := range s.Pairs {
-		// adding up all the invalid IDs
-		r += pair.SumInvalid()
+	for i := range s.Pairs {
+		r += s.Pairs[i].Validate()
 	}
 	return r
 }
