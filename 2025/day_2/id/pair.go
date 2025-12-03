@@ -1,6 +1,9 @@
 package id
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 type Pair struct {
 	First   int64
@@ -54,39 +57,63 @@ func validInt64(n int64) bool {
 
 func valid(s string, minRepeats int, atLeast bool) bool {
 	n := len(s)
+
 	if n < 2 || minRepeats < 2 {
+		//nope
 		return true
 	}
 
-	for d := 1; d*d <= n; d++ {
+	for d := 1; d*d <= n; d++ { // every possible divisor of the string length
+		//consider string length 5, and the following d values:
+		//1*1=1; 1 <= 5; run loop
+		//2*2=4; 4 <= 5; run loop
+		//3*3=9; 9 !<= 5; break
+		//d only goes up to the whole number part of the sqrt(n) = 2.2360679775
+
+		// if d does not go into n evenly skip it
+		// this check also ensures only whole number block lengths are used
+		// if we try to use 2 (from above) here, then 5/2 = 2.5 which is not a whole number
 		if n%d != 0 {
-			continue
+			// d (iterator) = 2 and n (string length) = 5 then  []int{1, 2/5}
+			continue // d does not go into n evenly
 		}
 
+		// because of check above this loop only runs on whole numbers
+		// example: d (iterator) = 1 and n (string length) = 5 then  []int{1, 5}
 		for _, blockLen := range []int{d, n / d} {
+
+			// if d = 1 then on the first iteration here, blockLen = 1 and n = 5
+			// we skip single character blocks
+			// since "is the whole string repeated 1 time?" is always true,
+			// match would be true, and the function would return false
+			// every string is 1 copy of itself so that would make all strings invalid
 			if blockLen >= n {
-				continue
+				continue //single block
 			}
+
+			// reps are how many times a block repeats to fill the entire string
+			// because of check above this loop only runs on whole numbers so we get the number of full blocks that fit
+			// example: d (iterator) = 1 and n (string length) = 5 and blockLen = 5 then reps = 5 / 5 = 1
 			reps := n / blockLen
 
-			// exact count or at-least??
+			// check min repeat setting exact/at-least
 			if !atLeast && reps != minRepeats {
-				continue
+				continue // exact
 			}
 			if atLeast && reps < minRepeats {
-				continue
+				continue // at-least
 			}
 
+			// we define a "block" as a contiguous substring of length `blockLen`
+			// when a block is repeated exactly (n / blockLen) times it reconstructs the entire string.
 			block := s[:blockLen]
-			match := true
-			for i := blockLen; i < n; i += blockLen {
-				if s[i:i+blockLen] != block {
-					match = false
-					break
-				}
-			}
-			if match {
-				return false // nope, invalid
+
+			// ensure the rest of the string is created by repeating the same block
+			// iterate the string by blockLen and compare each group
+			// even though strings.Repeat(...) is allocation-free and fast,
+			// still O(n) for every divisor, worst O(n √n), big oof on strings (over 1 million digits)
+			if strings.Repeat(block, reps) == s {
+				return false
 			}
 		}
 	}
