@@ -1,10 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"log"
-	"os"
 	"strconv"
+
+	shared "shared_aoc_2025"
 )
 
 type Dial struct {
@@ -26,7 +26,7 @@ func NewDial() *Dial {
 func main() {
 	d := NewDial()
 
-	streamProcess("input.txt", func(r rune) {
+	shared.StreamProcess("input.txt", func(r rune) {
 		switch r {
 		case 'L':
 			d.dir = "L"
@@ -83,21 +83,5 @@ func (d *Dial) Turn(steps int32) {
 			d.count++
 		}
 		d.value = (d.value - rem + 100) % 100 // ensure non-negative
-	}
-}
-
-func streamProcess(path string, fn func(rune)) {
-	file, err := os.Open(path)
-	if err != nil {
-		log.Fatalf("failed to open file: %s", err)
-	}
-	defer file.Close()
-	reader := bufio.NewReader(file)
-	for {
-		r, _, err := reader.ReadRune()
-		if err != nil {
-			break
-		}
-		fn(r)
 	}
 }
