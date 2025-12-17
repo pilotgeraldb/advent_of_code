@@ -9,7 +9,7 @@ import (
 func main() {
 	total := 0
 	arr := []int{}
-	s := state.NewState(2)
+	s := state.NewState(12)
 
 	shared.StreamProcess("input.txt", func(r rune, line int, idx int) {
 		switch r {
