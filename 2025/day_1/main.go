@@ -26,7 +26,7 @@ func NewDial() *Dial {
 func main() {
 	d := NewDial()
 
-	shared.StreamProcess("input.txt", func(r rune) {
+	shared.StreamProcess("input.txt", func(r rune, line int, idx int) {
 		switch r {
 		case 'L':
 			d.dir = "L"

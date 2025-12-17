@@ -10,7 +10,7 @@ import (
 
 func main() {
 	s := state.State{}
-	shared.StreamProcess("test.txt", func(r rune) {
+	shared.StreamProcess("test.txt", func(r rune, line int, idx int) {
 		if s.CurrentPair == nil {
 			s.CurrentPair = new(id.Pair)
 		}
