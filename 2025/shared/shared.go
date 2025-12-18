@@ -43,6 +43,10 @@ func WithEOFCallback(eofCallback func()) StreamProcessOption {
 }
 
 func StreamProcess(path string, fn func(sctx StreamInfo), opts ...StreamProcessOption) {
+	if fn == nil {
+		log.Fatalf("fn cannot be nil")
+	}
+
 	cfg := NewStreamProcessConfig(opts...)
 
 	file, err := os.Open(path)
@@ -59,7 +63,9 @@ func StreamProcess(path string, fn func(sctx StreamInfo), opts ...StreamProcessO
 	for {
 		r, _, err := reader.ReadRune()
 		if err != nil {
-			cfg.EOFCallback()
+			if cfg.EOFCallback != nil {
+				cfg.EOFCallback()
+			}
 			break
 		}
 		sctx := NewStreamInfo(r, l, c, g)
