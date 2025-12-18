@@ -1,6 +1,7 @@
 # user-defined
 
 test.txt
+__debug*
 
 # Logs
 logs
