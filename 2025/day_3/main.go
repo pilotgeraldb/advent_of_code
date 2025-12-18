@@ -11,8 +11,8 @@ func main() {
 	arr := []int{}
 	s := state.NewState(12)
 
-	shared.StreamProcess("input.txt", func(r rune, line int, idx int) {
-		switch r {
+	shared.StreamProcess("input.txt", func(si shared.StreamInfo) {
+		switch si.R {
 		case '\r':
 		case '\n':
 			s.SetInputArray(arr)
@@ -22,7 +22,7 @@ func main() {
 			s.Reset()
 			arr = []int{}
 		default:
-			d := int(r - '0')
+			d := int(si.R - '0')
 			fmt.Print(d)
 			arr = append(arr, d)
 		}
