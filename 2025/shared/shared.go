@@ -22,7 +22,29 @@ func NewStreamInfo(r rune, line, lineIndex, globalIndex int) StreamInfo {
 	}
 }
 
-func StreamProcess(path string, fn func(sctx StreamInfo)) {
+type StreamProcessConfig struct {
+	EOFCallback func() // end of file callback
+}
+
+func NewStreamProcessConfig(opts ...StreamProcessOption) StreamProcessConfig {
+	cfg := StreamProcessConfig{}
+	for _, opt := range opts {
+		opt(&cfg)
+	}
+	return cfg
+}
+
+type StreamProcessOption func(*StreamProcessConfig)
+
+func WithEOFCallback(eofCallback func()) StreamProcessOption {
+	return func(o *StreamProcessConfig) {
+		o.EOFCallback = eofCallback
+	}
+}
+
+func StreamProcess(path string, fn func(sctx StreamInfo), opts ...StreamProcessOption) {
+	cfg := NewStreamProcessConfig(opts...)
+
 	file, err := os.Open(path)
 	if err != nil {
 		log.Fatalf("failed to open file: %s", err)
@@ -37,16 +59,19 @@ func StreamProcess(path string, fn func(sctx StreamInfo)) {
 	for {
 		r, _, err := reader.ReadRune()
 		if err != nil {
+			cfg.EOFCallback()
 			break
 		}
 		sctx := NewStreamInfo(r, l, c, g)
 		fn(sctx)
 		if r == '\n' {
 			l++
+			g++
 			c = 0
 			continue
+		} else {
+			c++
+			g++
 		}
-		c++
-		g++
 	}
 }
