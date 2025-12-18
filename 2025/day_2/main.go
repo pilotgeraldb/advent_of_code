@@ -10,11 +10,11 @@ import (
 
 func main() {
 	s := state.State{}
-	shared.StreamProcess("test.txt", func(r rune, line int, idx int) {
+	shared.StreamProcess("test.txt", func(si shared.StreamInfo) {
 		if s.CurrentPair == nil {
 			s.CurrentPair = new(id.Pair)
 		}
-		switch r {
+		switch si.R {
 		case '\r':
 			s.CurrentPair.Last, _ = strconv.ParseInt(string(s.Value), 10, 64)
 		case '\n': // eof
@@ -31,7 +31,7 @@ func main() {
 			s.Pairs = append(s.Pairs, *s.CurrentPair)
 			s.Reset()
 		default:
-			s.Value = append(s.Value, r)
+			s.Value = append(s.Value, si.R)
 		}
 	})
 	log.Printf("answer: %d", s.Result)

@@ -26,8 +26,8 @@ func NewDial() *Dial {
 func main() {
 	d := NewDial()
 
-	shared.StreamProcess("input.txt", func(r rune, line int, idx int) {
-		switch r {
+	shared.StreamProcess("input.txt", func(si shared.StreamInfo) {
+		switch si.R {
 		case 'L':
 			d.dir = "L"
 		case 'R':
@@ -38,7 +38,7 @@ func main() {
 			d.Turn(d.getAmount())
 			d.Reset()
 		default:
-			d.amount = append(d.amount, r)
+			d.amount = append(d.amount, si.R)
 		}
 	})
 
