@@ -16,10 +16,6 @@ func (s *State) AddRange(r Range) {
 	s.ranges = append(s.ranges, r)
 }
 
-func (s State) Ranges() *[]Range {
-	return &s.ranges
-}
-
 func (s State) MergeAll() []Range {
 	if len(s.ranges) == 0 {
 		return nil
