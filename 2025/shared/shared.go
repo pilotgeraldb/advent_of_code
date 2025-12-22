@@ -11,6 +11,11 @@ type StreamInfo struct {
 	Line        int
 	LineIndex   int
 	GlobalIndex int
+	LineRuneArr []rune
+}
+
+func NewEmptyStreamInfo() StreamInfo {
+	return StreamInfo{}
 }
 
 func NewStreamInfo(r rune, line, lineIndex, globalIndex int) StreamInfo {
@@ -20,6 +25,10 @@ func NewStreamInfo(r rune, line, lineIndex, globalIndex int) StreamInfo {
 		LineIndex:   lineIndex,
 		GlobalIndex: globalIndex,
 	}
+}
+
+func (s StreamInfo) GetLine() string {
+	return string(s.LineRuneArr)
 }
 
 type StreamProcessConfig struct {
@@ -43,6 +52,10 @@ func WithEOFCallback(eofCallback func()) StreamProcessOption {
 }
 
 func StreamProcess(path string, fn func(sctx StreamInfo), opts ...StreamProcessOption) {
+	if fn == nil {
+		log.Fatalf("fn cannot be nil")
+	}
+
 	cfg := NewStreamProcessConfig(opts...)
 
 	file, err := os.Open(path)
@@ -56,18 +69,29 @@ func StreamProcess(path string, fn func(sctx StreamInfo), opts ...StreamProcessO
 	g := 0
 	l := 1
 
+	sctx := NewEmptyStreamInfo()
+
 	for {
 		r, _, err := reader.ReadRune()
 		if err != nil {
-			cfg.EOFCallback()
+			if cfg.EOFCallback != nil {
+				cfg.EOFCallback()
+			}
 			break
 		}
-		sctx := NewStreamInfo(r, l, c, g)
+		sctx.R = r
+		sctx.Line = l
+		sctx.LineIndex = c
+		sctx.GlobalIndex = g
+		if r != '\n' && r != '\r' {
+			sctx.LineRuneArr = append(sctx.LineRuneArr, r)
+		}
 		fn(sctx)
 		if r == '\n' {
 			l++
 			g++
 			c = 0
+			sctx.LineRuneArr = []rune{}
 			continue
 		} else {
 			c++
