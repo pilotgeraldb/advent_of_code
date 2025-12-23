@@ -6,8 +6,18 @@ import (
 	"os"
 )
 
+type Character rune
+
+func (c Character) String() string {
+	return string(c)
+}
+
+func (c Character) Rune() rune {
+	return rune(c)
+}
+
 type StreamInfo struct {
-	R           rune
+	R           Character
 	Line        int
 	LineIndex   int
 	GlobalIndex int
@@ -20,7 +30,7 @@ func NewEmptyStreamInfo() StreamInfo {
 
 func NewStreamInfo(r rune, line, lineIndex, globalIndex int) StreamInfo {
 	return StreamInfo{
-		R:           r,
+		R:           Character(r),
 		Line:        line,
 		LineIndex:   lineIndex,
 		GlobalIndex: globalIndex,
@@ -32,7 +42,9 @@ func (s StreamInfo) GetLine() string {
 }
 
 type StreamProcessConfig struct {
-	EOFCallback func() // end of file callback
+	EOFCallback     func()                // end of file callback
+	NewlineCallback func()                // new line callback
+	CRCallback      func(sctx StreamInfo) // carriage return callback
 }
 
 func NewStreamProcessConfig(opts ...StreamProcessOption) StreamProcessConfig {
@@ -45,9 +57,21 @@ func NewStreamProcessConfig(opts ...StreamProcessOption) StreamProcessConfig {
 
 type StreamProcessOption func(*StreamProcessConfig)
 
-func WithEOFCallback(eofCallback func()) StreamProcessOption {
+func WithEOFCallback(f func()) StreamProcessOption {
 	return func(o *StreamProcessConfig) {
-		o.EOFCallback = eofCallback
+		o.EOFCallback = f
+	}
+}
+
+func WithNewlineCallback(f func()) StreamProcessOption {
+	return func(o *StreamProcessConfig) {
+		o.NewlineCallback = f
+	}
+}
+
+func WithCRCallback(f func(sctx StreamInfo)) StreamProcessOption {
+	return func(o *StreamProcessConfig) {
+		o.CRCallback = f
 	}
 }
 
@@ -79,7 +103,7 @@ func StreamProcess(path string, fn func(sctx StreamInfo), opts ...StreamProcessO
 			}
 			break
 		}
-		sctx.R = r
+		sctx.R = Character(r)
 		sctx.Line = l
 		sctx.LineIndex = c
 		sctx.GlobalIndex = g
@@ -87,7 +111,15 @@ func StreamProcess(path string, fn func(sctx StreamInfo), opts ...StreamProcessO
 			sctx.LineRuneArr = append(sctx.LineRuneArr, r)
 		}
 		fn(sctx)
+		if r == '\r' {
+			if cfg.CRCallback != nil {
+				cfg.CRCallback(sctx)
+			}
+		}
 		if r == '\n' {
+			if cfg.NewlineCallback != nil {
+				cfg.NewlineCallback()
+			}
 			l++
 			g++
 			c = 0
