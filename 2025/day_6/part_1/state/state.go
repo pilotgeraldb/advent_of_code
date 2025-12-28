@@ -1,6 +1,6 @@
 package state
 
-import "day_6_aoc_2025/expression"
+import "day_6_part_1_aoc_2025/expression"
 
 type State struct {
 	expressions    []*expression.Expression
