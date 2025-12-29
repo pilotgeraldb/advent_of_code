@@ -31,7 +31,7 @@ func main() {
 			s.Pairs = append(s.Pairs, *s.CurrentPair)
 			s.Reset()
 		default:
-			s.Value = append(s.Value, si.R)
+			s.Value = append(s.Value, si.R.Rune())
 		}
 	})
 	log.Printf("answer: %d", s.Result)

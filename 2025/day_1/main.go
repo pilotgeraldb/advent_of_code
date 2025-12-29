@@ -38,7 +38,7 @@ func main() {
 			d.Turn(d.getAmount())
 			d.Reset()
 		default:
-			d.amount = append(d.amount, si.R)
+			d.amount = append(d.amount, si.R.Rune())
 		}
 	})
 

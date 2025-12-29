@@ -1,8 +1,8 @@
 package main
 
 import (
-	"day_6_aoc_2025/expression"
-	"day_6_aoc_2025/state"
+	"day_6_part_1_aoc_2025/expression"
+	"day_6_part_1_aoc_2025/state"
 	"log"
 	shared "shared_aoc_2025"
 )
@@ -27,7 +27,7 @@ func main() {
 			total += exp.Evaluate()
 		}
 		log.Printf("total: %d", total)
-	}), shared.WithNewlineCallback(func() {
+	}), shared.WithNewlineCallback(func(si shared.StreamInfo) {
 		if !s.CurrentOperand().IsEmpty() {
 			log.Println("not empty")
 		}
@@ -42,7 +42,7 @@ func AddToExpression(s *state.State, si shared.StreamInfo) {
 	if currentOperand.IsEmpty() {
 		return
 	}
-	if si.Line == 1 {
+	if si.LineNumber == 1 {
 		exp := expression.NewExpression()
 		op := currentOperand.Build()
 		exp.AppendOperand(op)
